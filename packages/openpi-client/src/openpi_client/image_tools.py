@@ -28,6 +28,12 @@ def resize_with_pad(images: np.ndarray, height: int, width: int, method=Image.BI
     if images.shape[-3:-1] == (height, width):
         return images
 
+    if images.dtype != np.uint8:
+        if np.max(images) <= 1.0:
+            images = (images * 255).astype(np.uint8)
+        else:
+            images = images.astype(np.uint8)
+
     original_shape = images.shape
 
     images = images.reshape(-1, *original_shape[-3:])
